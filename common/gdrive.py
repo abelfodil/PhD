@@ -6,7 +6,7 @@ from pydrive.drive import GoogleDrive
 
 from tqdm import tqdm
 
-from common.os_utils import make_directory, md5_file
+from common.os_utils import make_directory, md5_file, touch_file, file_exists
 
 _BASE_LOCAL_GDRIVE_PATH_PREFIX = f"{os.getcwd()}/gdrive_data"
 
@@ -56,6 +56,10 @@ def download_drive_folder(folder_id, destination=None):
         folder = drive.CreateFile({'id': folder_id})
         destination = f"{_BASE_LOCAL_GDRIVE_PATH_PREFIX}/{folder['title']}"
 
+    download_complete_path = f"{destination}/download_complete"
+    if file_exists(download_complete_path):
+        return destination
+
     print("Fetching file list...")
     file_list = _recursively_list_files(folder_id, destination, drive)
     print(f"Found {len(file_list)} files")
@@ -65,5 +69,7 @@ def download_drive_folder(folder_id, destination=None):
         file_path = file['path']
         make_directory(os.path.dirname(file_path))
         _download_file(file['object'], file_path)
+
+    touch_file(download_complete_path)
 
     return destination
