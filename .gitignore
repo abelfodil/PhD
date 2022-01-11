@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Google Drive
+gdrive_token.json
+gdrive_client_credentials.json
+gdrive_data/
