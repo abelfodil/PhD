@@ -21,3 +21,6 @@ RUN cd /tmp && \
     unzip sct.zip && \
     cd spinalcordtoolbox-5.4 && \
     ./install_sct -y
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
